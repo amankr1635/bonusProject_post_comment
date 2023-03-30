@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const routes = require("./routes");
+const multer = require("multer");
 const app = express()
+app.use(multer().any())
 
 app.use(express.json())
 mongoose.connect("mongodb+srv://amankr1635:VNgsREYA9NfobsPM@cluster0.z1bikfo.mongodb.net/bonusProject-post_comment")
