@@ -42,7 +42,7 @@ const userLogin = async function(req,res){
  
    if(!userExist) return res.status(404).send({status: false,message:"no user exist"})
  
-   let token =jwt.sign({userId: userExist._id},{email:userExist.email},{phoneNo:userExist.phoneNo},"thisislogin")
+   let token =jwt.sign({userId: userExist._id,email:userExist.email,phoneNo:userExist.phoneNo},"thisislogin")
  
    return res.status(200).send({status:true,token:token})
  } catch (error) {

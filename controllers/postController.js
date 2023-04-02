@@ -65,6 +65,10 @@ try {
         body.image = fileUrl 
     }
     if(!body) res.status(400).send({status:false,message: "enter data in body" })
+    let checkPost = await postModel.findOne({_id:body.postId, isDeleted:false})
+     if(!checkPost) return res.status(404).send({staus:false,message:"no post exist"})
+    
+    if(req.decodedToken.userId != checkPost.userId )return res.status(403).send({staus:false,message:"you are not authorised"})
 
     let updatedData =await postModel.findOneAndUpdate({_id:body.postId},body,{new:true})
 
@@ -79,15 +83,11 @@ const deletePost = async function(req,res){
 try {
     
     let body = req.body
+
+    let checkPost = await postModel.findOne({_id:body.postId,isDeleted:false})
+     if(!checkPost) return res.status(404).send({staus:false,message:"no post exist"})
     
-    // let checkData= await postModel.findOneAndUpdate({_id:body.postId,isDeleted:false},{isDeleted:true})
-    // if(!checkData)return res.status(404).send({status:false,message:"post not found"})
-
-    // return res.status(200).send({status:false,message:"post deleted sucessfully"})
-
-
-    // esme kuch gadbad hai......  
-
+    if(req.decodedToken.userId != checkPost.userId )return res.status(403).send({staus:false,message:"you are not authorised"})
 
     let checkData = await postModel.findOneAndUpdate({_id:body.postId,isDeleted:false},{isDeleted: true})
     if(!checkData)return res.status(404).send({status:false, message:"post not found"})
@@ -99,9 +99,20 @@ try {
 }
 }
 
+const getAllPost=async function(req,res){
+    try {
+        
+        let getData = await postModel.find()
+    
+        return res.status(200).send({status:true, data:getData})
+    } catch (error) {
+        return res.status(500).send({staus:false,message:error.message})
+    }
+}
 
 
 
 module.exports.createPost = createPost
 module.exports.updatePost = updatePost
 module.exports.deletePost = deletePost
+module.exports.getAllPost=getAllPost

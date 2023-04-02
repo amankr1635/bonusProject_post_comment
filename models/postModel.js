@@ -13,13 +13,16 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    allComments:{
+        type:[String]
+    },
     comment:{
         type: Number,
         default :0
     },
-    isDelete:{
+    isDeleted:{
         type:Boolean,
-        default: false
+        default:false
     }
 },{timestamps:true})
 module.exports = mongoose.model("postData",postSchema)

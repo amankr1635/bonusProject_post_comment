@@ -12,7 +12,10 @@ const commentModel =new mongoose.Schema({
         // extract from jwt token not from the body
     },
     comment : {
-        type: String,
+        type: [String],
+    },
+    reply:{
+        type:[String]
     },
     isDeleted:{
         type:Boolean,
